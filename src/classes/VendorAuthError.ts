@@ -1,0 +1,1 @@
+class VendorAuthError extends VendorError {}

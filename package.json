@@ -1,0 +1,27 @@
+{
+  "name": "vendor-api",
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "url": "https://github.com/SidVermaS/vendor-api"
+  },
+  "scripts": {
+    "build":"tsup"
+  },
+  "keywords": [
+    "vendor",
+    "vendor api",
+    "vendor apis in function",
+    "vendor auth handler"
+  ],
+  "author": "Sid Verma",
+  "license": "MIT",
+  "type": "commonjs",
+  "description": "Create a vendor class for 3rd Party APIs wherein every API will be a function. The authentication will be handled internally",
+  "devDependencies": {
+    "tsup": "^8.3.6",
+    "typescript": "^5.7.3"
+  }
+}

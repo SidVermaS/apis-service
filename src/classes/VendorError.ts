@@ -1,0 +1,3 @@
+class VendorError extends Error {
+  
+}
