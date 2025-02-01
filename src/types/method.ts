@@ -1,1 +1,0 @@
-export type MethodI='GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE'
