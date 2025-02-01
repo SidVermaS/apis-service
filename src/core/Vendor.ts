@@ -35,14 +35,15 @@ class Vendor<T extends ConfigI<T>> {
       method: params.method,
     }
     if (params?.body && Object.keys(params?.body).length) {
-      requestInit.body=params.body
+      requestInit.body = params.body
     }
     return requestInit;
   }
 
   /**
-   * Override this function if you need to regenerate the token from a login API.
-   ** If a new token is generated then update the header's key
+   * Override this function if you need to regenerate the token from a login API (use _loginAPICall() function).
+   ** After a new token is generated then update the header's key
+   ** Ensure to call the vendor's login API using _loginAPICall() function 
    */
   protected _login = async () => {
 
@@ -79,8 +80,26 @@ class Vendor<T extends ConfigI<T>> {
     }
   }
   /**
+   * Use this function to call the Vendor's login API by passing the path, method & optional (path's id, query, payload)
+   * @param params 
+   * @returns 
+   */
+  protected _loginAPICall = async (params: APICallFnParamsI): Promise<APICallFnResponseI> => {
+    try {
+      const response = await fetch(this._generateURL(params), this._generateRequestInit(params))
+      return await this._responseHandler(response)
+    } catch (error) {
+      if (error instanceof ResponseError) {
+        return await this._responseHandler(error.response)
+      } else {
+        return await this._responseHandler(error)
+      }
+    }
+  }
+  /**
    * Use this function to call the Vendor's API by passing the path, method & optional (path's id, query, payload)
    * @param params 
+   * @returns 
    */
   protected _apiCall = async (params: APICallFnParamsI): Promise<APICallFnResponseI> => {
     let attempts: number = 0;
@@ -92,7 +111,6 @@ class Vendor<T extends ConfigI<T>> {
       } catch (error) {
         if (error instanceof ResponseError) {
           const status = error.response.status;
-          // const json = await error.response.json();
           if (status === 401) {
             // If the status was unauthorized then we'll call the login API(If overriden) & attempt to call the requested API for specific no of times
             if (attempts < this._maxRetryLimit) {
@@ -101,7 +119,6 @@ class Vendor<T extends ConfigI<T>> {
               continue;
             }
           }
-
           return await this._responseHandler(error.response)
         } else {
           return await this._responseHandler(error)
