@@ -1,5 +1,5 @@
 import { ConfigI } from "../types/config";
-import { APICallFnParamsI, URLParamsI } from "../types/api";
+import { APICallFnParamsI, APICallFnResponseI, URLParamsI } from "../types/api";
 import { KeyStringPurePrimitiveI } from "../types/common";
 import VendorAuthError from "../classes/errors/VendorAuthError";
 import VendorUnknownError from "../classes/errors/VendorUnknownError";
@@ -14,7 +14,7 @@ class Vendor<T extends ConfigI<T>> {
     this._config = config;
   }
   /**
-   * Override this function to set the key-value pairs to the header before making an API  request 
+   * Override this function to set the key-value pairs to the header before making an API request 
    */
   protected _headersInjector() {
 
@@ -30,6 +30,16 @@ class Vendor<T extends ConfigI<T>> {
     }
     return fullURL
   }
+  private _generateRequestInit = (params: APICallFnParamsI): RequestInit => {
+    const requestInit: RequestInit = {
+      method: params.method,
+    }
+    if (params?.body && Object.keys(params?.body).length) {
+      requestInit.body=params.body
+    }
+    return requestInit;
+  }
+
   /**
    * Override this function if you need to regenerate the token from a login API.
    ** If a new token is generated then update the header's key
@@ -37,7 +47,14 @@ class Vendor<T extends ConfigI<T>> {
   protected _login = async () => {
 
   }
-  protected _responseHandler = async (data: Response | unknown) => {
+  /**
+   * Override this function for one of the following reasons:
+   ** If you want to throw custom errors according to your vendor
+   ** If you want to modify the response's json before processing it further in the code
+   * @param data 
+   * @returns 
+   */
+  protected _responseHandler = async (data: Response | unknown): Promise<APICallFnResponseI> => {
     if (data instanceof Response) {
       const response: Response = data
       const status = response.status;
@@ -61,14 +78,17 @@ class Vendor<T extends ConfigI<T>> {
       throw new VendorUnknownError({ error: JSON.stringify(data) })
     }
   }
-  protected _apiCall = async (params: APICallFnParamsI) => {
+  /**
+   * Use this function to call the Vendor's API by passing the path, method & optional (path's id, query, payload)
+   * @param params 
+   */
+  protected _apiCall = async (params: APICallFnParamsI): Promise<APICallFnResponseI> => {
     let attempts: number = 0;
     while (attempts < this._maxRetryLimit) {
       attempts++
       try {
-        const response = await fetch(this._generateURL(params),)
-
-        await this._responseHandler(response)
+        const response = await fetch(this._generateURL(params), this._generateRequestInit(params))
+        return await this._responseHandler(response)
       } catch (error) {
         if (error instanceof ResponseError) {
           const status = error.response.status;
@@ -82,12 +102,13 @@ class Vendor<T extends ConfigI<T>> {
             }
           }
 
-        await this._responseHandler(error.response)
-        }else{
-        await this._responseHandler(error)}
+          return await this._responseHandler(error.response)
+        } else {
+          return await this._responseHandler(error)
+        }
       }
-      
     }
+    return await this._responseHandler(undefined)
   }
 
 }

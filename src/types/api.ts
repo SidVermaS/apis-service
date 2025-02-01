@@ -7,6 +7,10 @@ export type URLParamsI = {
   headers?:KeyStringPurePrimitiveI
 }
 export type APICallFnParamsI =URLParamsI & {
-  body: Record<string, PrimitiveI>
+  body?: BodyInit
   method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE'
+}
+export type APICallFnResponseI ={
+  status: number;
+  json: any;
 }
