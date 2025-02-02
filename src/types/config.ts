@@ -1,9 +1,9 @@
 import { KeyStringPurePrimitiveI } from "./common";
 
-export type ConfigI<T> = {
-  baseURL:string;
+export type VendorConfigI<T> = { [K in keyof T]: T[K] } & {
+  baseURL: string;
   username?: string;
   token?: string;
   refreshToken?: string;
-    headers?:KeyStringPurePrimitiveI
+  headers?: KeyStringPurePrimitiveI
 }

@@ -8,7 +8,7 @@
     "url": "https://github.com/SidVermaS/vendor-api"
   },
   "scripts": {
-    "build":"tsup"
+    "build": "tsup"
   },
   "keywords": [
     "vendor",
@@ -21,6 +21,7 @@
   "type": "commonjs",
   "description": "Create a vendor class for 3rd Party APIs wherein every API will be a function. The authentication will be handled internally",
   "devDependencies": {
+    "@types/node": "^22.13.0",
     "tsup": "^8.3.6",
     "typescript": "^5.7.3"
   }

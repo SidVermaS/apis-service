@@ -1,4 +1,4 @@
-class ResponseError extends Error {
+ export class ResponseError extends Error {
   response: Response;
 
   constructor(message: string, response: Response) {

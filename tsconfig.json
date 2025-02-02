@@ -11,7 +11,7 @@
     "noEmit": true,
     "module": "CommonJS",
     "target": "ES2023",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "declarationDir": "dist/types",
     "rootDir": "./src",
     "outDir": "./dist"

@@ -4,7 +4,7 @@ export const CreateUserResSchema = z
 .object({
   name: z.string(),
   job: z.string(),
-  id: z.number(),
-  createdAt: z.date(),
+  id: z.string(),
+  createdAt: z.string(),
 })
 export type CreateUserResI = z.infer<typeof CreateUserResSchema>

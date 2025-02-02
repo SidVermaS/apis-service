@@ -1,6 +1,6 @@
 import {APICallFnParamsI, APICallFnResponseI, Vendor} from 'vendor-api'
 import type{ BlogConfigI } from './types/BlogConfig'
-import { LoginReqI, LoginReqSchema } from './schemas/login/req'
+import { LoginReqSchema } from './schemas/login/req'
 import { LoginResI, LoginResSchema } from './schemas/login/res'
 import { BlogReqDataError } from './errors/BlogReqDataError'
 import { BlogResDataError } from './errors/BlogResDataError'
@@ -14,17 +14,26 @@ import { BlogInternalServerError } from './errors/BlogInternalServerError'
 import { BlogAPIError } from './errors/BlogAPIError'
 import { CreateUserReqI, CreateUserReqSchema } from './schemas/createUser/req'
 import { CreateUserResI, CreateUserResSchema } from './schemas/createUser/res'
-import { UpdateUserReqI, UpdateUserReqSchema } from './schemas/updateUser/req'
+import {  UpdateUserReqSchema } from './schemas/updateUser/req'
 import { UpdateUserResI, UpdateUserResSchema } from './schemas/updateUser/res'
-import { UpdateUserModuleReqSchema } from './schemas/updateUser/moduleReq'
+import { UpdateUserModuleReqI, UpdateUserModuleReqSchema } from './schemas/updateUser/moduleReq'
 
 class Blog extends Vendor<BlogConfigI>  {
   constructor(config: BlogConfigI) {
     super(config)
+    this._headers['Content-Type']='application/json'
+    this._headers['Accept']='application/json'
+
   }
-  public async login(params:LoginReqI): Promise<LoginResI>{
+  protected async _headersInjector()  {
+    this._headers['token']=this._config.token!
+  }
+  public async login(): Promise<LoginResI>{
     try {     
-      const {data : reqData,error: reqError}=LoginReqSchema.safeParse(params)
+      const {data : reqData,error: reqError}=LoginReqSchema.safeParse({
+        email: this._config.email,
+        password:this._config.password,
+      })
       if(reqError)  {
         throw new BlogReqDataError(reqError.errors)
       }
@@ -33,8 +42,9 @@ class Blog extends Vendor<BlogConfigI>  {
       if(resError)  {
         throw new BlogResDataError(resError.errors)
       }
+      this._config.token=resData.token
       return resData;
-    } catch (error) {
+    } catch (error) {      
       throw this._handleCatch(error)
     }
   }  
@@ -57,7 +67,7 @@ class Blog extends Vendor<BlogConfigI>  {
   } 
   public async getUser(id:number): Promise<GetUserResI>{
     try {     
-      const response=await this._apiCall<LoginResI>({method:'GET',path:'/users', id})
+      const response=await this._apiCall<GetUserResI>({method:'GET',path:'/users', id})
       const {data : resData,error: resError}=GetUserResSchema.safeParse(response)
       if(resError)  {
         throw new BlogResDataError(resError.errors)
@@ -83,7 +93,7 @@ class Blog extends Vendor<BlogConfigI>  {
       throw this._handleCatch(error)
     }
   }  
-  public async updateUser(params:UpdateUserReqI): Promise<UpdateUserResI>{
+  public async updateUser(params:UpdateUserModuleReqI): Promise<UpdateUserResI>{
     try { 
           
       const {data : moduleReqData,error: moduleReqError}=UpdateUserModuleReqSchema.safeParse(params)
@@ -107,11 +117,7 @@ class Blog extends Vendor<BlogConfigI>  {
   }  
   public async deleteUser(id:number): Promise<void>{
     try {     
-      const response=await this._apiCall<UpdateUserResI>({method:'DELETE',path:'/users',id})
-      const {data : resData,error: resError}=CreateUserResSchema.safeParse(response)
-      if(resError)  {
-        throw new BlogResDataError(resError.errors)
-      }
+      const _response=await this._apiCall<unknown>({method:'DELETE',path:'/users',id})      
       return;
     } catch (error) {     
       throw this._handleCatch(error)
@@ -121,7 +127,9 @@ class Blog extends Vendor<BlogConfigI>  {
       if (data instanceof Response) {
           const response: Response = data
           const status = response.status;
-          const json = await response.json();
+          let json;
+          if(status!==204){
+          json = await response.json();}
           if (status > 199 && status < 300) {
             return {
               status,
@@ -141,7 +149,7 @@ class Blog extends Vendor<BlogConfigI>  {
           throw new BlogUnknownError({ error: JSON.stringify(data) })
         }
   }
-  protected _handleCatch(error: unknown): void {
+  protected _handleCatch(error: unknown): void {  
     if(error instanceof BlogClientError) {
       const e=error as BlogClientError
       throw new BlogClientError(e.status, e.data)
