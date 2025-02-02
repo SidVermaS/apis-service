@@ -14,7 +14,7 @@ const main = async () => {
   }
   // try {    
   //   const listUsersResult=await blog.listUsers({page:1, per_page:10})
-  //   console.log(listUsersResult);
+  //   // console.log(listUsersResult);
     
   // } catch (_error) {
   //   console.error(_error);
@@ -25,15 +25,15 @@ const main = async () => {
   } catch (_error) {
     console.error(_error);
   }
-  // try {
-  //   const createUserResult= await blog.createUser({
-  //       "name": "morpheus",
-  //       "job": "leader"
-  //     })
-  //     console.log(createUserResult);
-  // } catch (_error) {
-  //   console.error(_error);
-  // }
+  try {
+    const createUserResult= await blog.createUser({
+        "name": "morpheus",
+        "job": "leader"
+      })
+      console.log(createUserResult);
+  } catch (_error) {
+    console.error(_error);
+  }
   // try {    
   //   const updateUserResult = await blog.updateUser({
   //   "id": 2, "name": "morpheus",

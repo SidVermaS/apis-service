@@ -13,8 +13,8 @@ export class Vendor<T extends VendorConfigI<T>> {
   /**
    * Override this function to set the key-value pairs to the header before making an API request 
    */
-  protected async _headersInjector() {
-
+  protected async _headersInjector(_params: URLParamsI):Promise<KeyStringStringI> {
+    return {}
   }
   private _generateURL (params: URLParamsI): string  {
     let fullURL = `${this._config.baseURL}${params.path}`
@@ -47,7 +47,7 @@ export class Vendor<T extends VendorConfigI<T>> {
     }
     if (params?.body && Object.keys(params?.body).length) {
       requestInit.body =JSON.stringify(params?.body)
-    }
+    }    
     return requestInit;
   }
 
@@ -96,6 +96,7 @@ export class Vendor<T extends VendorConfigI<T>> {
    * @returns 
    */
   protected async _loginAPICall<Res>  (params: APICallFnParamsI): Promise<Res>  {
+      params.headers={...(await this._headersInjector(params)), ...params.headers as KeyStringStringI}
       const response = await fetch(this._generateURL(params), this._generateRequestInit(params))
       const result=  await this._responseHandler(params,response)
       return result.json as Res
@@ -106,7 +107,7 @@ export class Vendor<T extends VendorConfigI<T>> {
    * @returns 
    */
   protected async _apiCall<Res>(params: APICallFnParamsI): Promise<Res | void>  {
-    await this._headersInjector()
+    params.headers={...(await this._headersInjector(params)), ...params.headers as KeyStringStringI}
     let attempts: number = 0;
     while (attempts < this._maxRetryLimit) {
       attempts++
