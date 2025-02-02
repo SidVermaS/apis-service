@@ -1,5 +1,5 @@
 # Vendor API 🚀
-Do you want to interact with other microservices or third party APIs of applications such as Payment gateways, Analytics, Social media integration, Geolocation Services or any application seamlessly without having to worry about signing & the token being expired?
+Do you want to interact with other microservices or third party APIs of applications such as Payment gateways, Analytics, Social media integration, Geolocation Services or any application seamlessly without having to worry about signing in & the token being expired?
 * Well, we can call any of the APIs by simply calling a function which will be calling the vendor's API under the hood. 😇
 * This package will take care of injecting headers, throwing the errors, parsing the data by use of a simple function. 🙀
 
