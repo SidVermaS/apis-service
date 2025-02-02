@@ -107,11 +107,13 @@ export class Vendor<T extends VendorConfigI<T>> {
    * @returns 
    */
   protected async _apiCall<Res>(params: APICallFnParamsI): Promise<Res | void>  {
-    params.headers={...(await this._headersInjector(params)), ...params.headers as KeyStringStringI}
+   
     let attempts: number = 0;
     while (attempts < this._maxRetryLimit) {
       attempts++
-      try {
+      try { 
+        params.headers={...(await this._headersInjector(params)), ...params.headers as KeyStringStringI}
+        
         const url=this._generateURL(params);
         const response = await fetch(url, this._generateRequestInit(params))
         const result=  await this._responseHandler(params,response)

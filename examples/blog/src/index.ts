@@ -4,7 +4,11 @@ const main = async () => {
   const blog = new Blog({
     'baseURL': 'https://reqres.in/api',
     "email": "eve.holt@reqres.in",
-    "password": "cityslicka"
+    // You can fetch the password from an .env or any storage
+    "password": "cityslicka",
+    saveDataFn:(..._args)=> {
+      // This function can be used for saving the newly generated token in to a file/database/storage  
+    },
   })
   try {    
     const  loginResult=await blog.login()

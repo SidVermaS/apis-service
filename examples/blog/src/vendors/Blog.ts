@@ -30,7 +30,7 @@ class Blog extends Vendor<BlogConfigI> {
     const headers: KeyStringStringI = {}
     // For /login, /register APIs, we won't pass token in the headers because we're suppose to receive the token from the /login API
     if (![params.path.includes('/login'),params.path.includes('/register')].includes(true)) {
-      headers['Authorization'] = this._config.token!
+      headers['Authorization'] = `Bearer ${this._config.token!}`
     }
     return headers;
   }
