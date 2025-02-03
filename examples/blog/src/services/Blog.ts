@@ -52,7 +52,7 @@ class Blog extends Service<BlogConfigI> {
       this._config.token = resData.token
       return resData;
     } catch (error) {
-      throw this._handleCatch(error)
+      this._handleCatch(error)
     }
   }
   public async listUsers(params: PaginationReqI): Promise<ListUsersResI> {
@@ -68,8 +68,7 @@ class Blog extends Service<BlogConfigI> {
       }
       return resData;
     } catch (error) {
-
-      throw this._handleCatch(error)
+      this._handleCatch(error)
     }
   }
   public async getUser(id: number): Promise<GetUserResI> {
@@ -81,7 +80,7 @@ class Blog extends Service<BlogConfigI> {
       }
       return resData;
     } catch (error) {
-      throw this._handleCatch(error)
+      this._handleCatch(error)
     }
   }
   public async createUser(params: CreateUserReqI): Promise<CreateUserResI> {
@@ -97,7 +96,7 @@ class Blog extends Service<BlogConfigI> {
       }
       return resData;
     } catch (error) {
-      throw this._handleCatch(error)
+      this._handleCatch(error)
     }
   }
   public async updateUser(params: UpdateUserModuleReqI): Promise<UpdateUserResI> {
@@ -121,7 +120,7 @@ class Blog extends Service<BlogConfigI> {
       }
       return resData;
     } catch (error) {
-      throw this._handleCatch(error)
+      this._handleCatch(error)
     }
   }
   public async deleteUser(id: number): Promise<void> {
@@ -129,7 +128,7 @@ class Blog extends Service<BlogConfigI> {
       const _response = await this._apiCall<unknown>({ method: 'DELETE', path: '/users', id })
       return;
     } catch (error) {
-      throw this._handleCatch(error)
+      this._handleCatch(error)
     }
   }
   protected async _responseHandler(_params: APICallFnParamsI, data: Response | unknown): Promise<APICallFnResponseI> {
@@ -159,7 +158,7 @@ class Blog extends Service<BlogConfigI> {
       throw new BlogUnknownError({ error: JSON.stringify(data) })
     }
   }
-  protected _handleCatch(error: unknown): void {
+  protected _handleCatch(error: unknown): never {
     if (error instanceof BlogClientError) {
       const e = error as BlogClientError
       throw new BlogClientError(e.status, e.data)
