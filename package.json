@@ -1,10 +1,10 @@
 {
   "name": "apis-service",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files":["dist","index.d.ts"],
+  "files":["dist","index.d.ts","**/*.d.ts"],
   "repository": {
     "url": "https://github.com/SidVermaS/apis-service"
   },
