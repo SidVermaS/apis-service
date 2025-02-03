@@ -1,12 +1,12 @@
-# Vendor API 🚀
+# API Service 🚀
 Do you want to interact with other microservices or third party APIs of applications such as Payment gateways, Analytics, Social media integration, Geolocation Services or any application seamlessly without having to worry about signing in & the token being expired?
-* Well, we can call any of the APIs by simply calling a function which will be calling the vendor's API under the hood. 😇
+* Well, we can call any of the APIs by simply calling a function which will be calling the service's API under the hood. 😇
 * This package will take care of injecting headers, throwing the errors, parsing the data by use of a simple function. 🙀
 
 
 ## Example
-### Application of the Vendor class 🔥
-Here's an application of the Vendor class in the client's code.<br/>
+### Application of the Service class 🔥
+Here's an application of the Service class in the client's code.<br/>
 In this example, we will interact with the Blog Application.
 <br/>
  In your application, you will have to create an instance of the Blog & you will be able to call all of it's APIs.
@@ -37,15 +37,15 @@ try {
 }
 ```
 
-### Implementation of Vendor Class ⚙️
-Now, we will see how can we create a Blog class and implement the Vendor class to call the APIs under the hood.
+### Implementation of Service Class ⚙️
+Now, we will see how can we create a Blog class and implement the Service class to call the APIs under the hood.
 For better understanding, please refer to
-[Blog.ts](./examples/blog/src/vendors/Blog.ts)
+[Blog.ts](./examples/blog/src/services/Blog.ts)
 
 #### 1. Inheritance
-We have inherited the Blog class from the Vendor class which will provide it's functionality by default
+We have inherited the Blog class from the Service class which will provide it's functionality by default
 ```typescript
-class Blog extends Vendor<BlogConfigI> {
+class Blog extends Service<BlogConfigI> {
 
 }
 ```
@@ -104,7 +104,7 @@ We're receiving a params which will be validated and passed as a payload in the 
 
 #### 4. We can create multiple error classes which we can use for conditional handling of the errors in the catch block
 ```typescript
-export class BlogClientError extends VendorClientError {
+export class BlogClientError extends ServiceClientError {
   constructor(_status: number, _data: unknown | unknown[]) {
     super(_status, _data)
   }

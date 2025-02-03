@@ -1,4 +1,4 @@
- export class ResponseError extends Error {
+ class ResponseError extends Error {
   response: Response;
 
   constructor(message: string, response: Response) {
@@ -6,3 +6,4 @@
       this.response = response;
   }
 }
+export default ResponseError

@@ -1,4 +1,4 @@
-import { APICallFnParamsI, APICallFnResponseI, KeyStringStringI, URLParamsI, Vendor } from 'vendor-api'
+import { APICallFnParamsI, APICallFnResponseI, KeyStringStringI, URLParamsI, Service } from 'service-api'
 import type { BlogConfigI } from './types/BlogConfig'
 import { LoginReqSchema } from './schemas/login/req'
 import { LoginResI, LoginResSchema } from './schemas/login/res'
@@ -18,7 +18,7 @@ import { UpdateUserReqSchema } from './schemas/updateUser/req'
 import { UpdateUserResI, UpdateUserResSchema } from './schemas/updateUser/res'
 import { UpdateUserModuleReqI, UpdateUserModuleReqSchema } from './schemas/updateUser/moduleReq'
 
-class Blog extends Vendor<BlogConfigI> {
+class Blog extends Service<BlogConfigI> {
   constructor(config: BlogConfigI) {
     super(config)
     // These headers will persist for all the API's requests

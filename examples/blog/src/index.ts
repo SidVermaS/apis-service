@@ -1,4 +1,4 @@
-import Blog from "./vendors/Blog"
+import Blog from "./services/Blog"
 
 const main = async () => {
   const blog = new Blog({

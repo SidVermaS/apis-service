@@ -1,13 +1,13 @@
-import { VendorConfigI } from "../types/config";
+import { ServiceConfigI } from "../types/config";
 import { APICallFnParamsI, APICallFnResponseI, URLParamsI } from "../types/api";
 import { KeyStringPurePrimitiveI, KeyStringStringI } from "../types/common";
-import { ResponseError, VendorAPIError, VendorAuthError, VendorClientError, VendorInternalServerError, VendorUnknownError } from "../errors";
+import { ResponseError, ServiceAPIError, ServiceAuthError, ServiceClientError, ServiceInternalServerError, ServiceUnknownError } from "../errors";
 
-export class Vendor<T extends VendorConfigI<T>> {
+export default class Service<T extends ServiceConfigI<T>> {
   private _maxRetryLimit: number = 2;
-  protected _config: VendorConfigI<T>;
+  protected _config: ServiceConfigI<T>;
   protected _headers: KeyStringPurePrimitiveI = {};
-  constructor(config: VendorConfigI<T>) {
+  constructor(config: ServiceConfigI<T>) {
     this._config = config;    
   }
   /**
@@ -54,14 +54,14 @@ export class Vendor<T extends VendorConfigI<T>> {
   /**
    * Override this function if you need to regenerate the token from a login API (use _loginAPICall() function).
    ** After a new token is generated then update the header's key
-   ** Ensure to call the vendor's login API using _loginAPICall() function 
+   ** Ensure to call the service's login API using _loginAPICall() function 
    */
   public async login (...args: unknown[]):Promise<unknown> {
     return {} as unknown;
   }
   /**
    * Override this function for one of the following reasons:
-   ** If you want to throw custom errors according to your vendor
+   ** If you want to throw custom errors according to your service
    ** If you want to modify the response's json before processing it further in the code
    * @param data 
    * @returns 
@@ -78,20 +78,20 @@ export class Vendor<T extends VendorConfigI<T>> {
         }
       }
       else if (status === 401) {
-        throw new VendorAuthError(status, json)
+        throw new ServiceAuthError(status, json)
       } else if (status > 399 && status < 500) {
-        throw new VendorClientError(status, json)
+        throw new ServiceClientError(status, json)
       } else if (status > 499 && status < 600) {
-        throw new VendorInternalServerError(status, json)
+        throw new ServiceInternalServerError(status, json)
       } else {
-        throw new VendorAPIError(status, json)
+        throw new ServiceAPIError(status, json)
       }
     } else {
-      throw new VendorUnknownError({ error: JSON.stringify(data) })
+      throw new ServiceUnknownError({ error: JSON.stringify(data) })
     }
   }
   /**
-   * Use this function to call the Vendor's login API by passing the path, method & optional (path's id, query, payload)
+   * Use this function to call the Service's login API by passing the path, method & optional (path's id, query, payload)
    * @param params 
    * @returns 
    */
@@ -102,7 +102,7 @@ export class Vendor<T extends VendorConfigI<T>> {
       return result.json as Res
     }
   /**
-   * Use this function to call the Vendor's API by passing the path, method & optional (path's id, query, payload)
+   * Use this function to call the Service's API by passing the path, method & optional (path's id, query, payload)
    * @param params 
    * @returns 
    */

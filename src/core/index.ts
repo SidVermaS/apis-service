@@ -1,1 +1,1 @@
-export * as Vendor  from './Vendor'
+export {default as Service } from './Service'

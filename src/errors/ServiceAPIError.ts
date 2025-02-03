@@ -1,6 +1,6 @@
-import {VendorError} from "./VendorError";
+import ServiceError from "./ServiceError";
 
-export class VendorAPIError extends VendorError {
+ class ServiceAPIError extends ServiceError {
   private _status:number;
 
     constructor(_status:number,_data:unknown) {
@@ -11,3 +11,4 @@ export class VendorAPIError extends VendorError {
       return this._status
     }
 }
+export default ServiceAPIError

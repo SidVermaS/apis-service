@@ -1,4 +1,4 @@
-export class VendorError extends Error {
+class ServiceError extends Error {
   private _data:unknown;
   constructor(_data:unknown) {
     super()
@@ -8,3 +8,4 @@ export class VendorError extends Error {
     return this._data
   }
 }
+export default ServiceError
