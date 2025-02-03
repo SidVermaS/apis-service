@@ -8,7 +8,6 @@
     "strictNullChecks": true,
     "emitDeclarationOnly":true,
     "declaration": true,
-    "declarationMap": true,
     "isolatedModules": true,
     "noEmit": true,
     "module": "CommonJS",
