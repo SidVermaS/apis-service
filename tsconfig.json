@@ -1,21 +1,12 @@
 {
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "removeComments": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "esModuleInterop": true,
-    "strictNullChecks": true,
-    "emitDeclarationOnly":true,
+  "compilerOptions": {  
     "declaration": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "module": "CommonJS",
-    "target": "ES2023",
-    "moduleResolution": "node",
-    "declarationDir": "dist",
+    "emitDeclarationOnly": true,
+
+    "declarationDir": "./dist",
     "rootDir": "./src",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "allowJs": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.test.js"]
