@@ -6,6 +6,7 @@
     "noImplicitAny": true,
     "esModuleInterop": true,
     "strictNullChecks": true,
+    "emitDeclarationOnly":true,
     "declaration": true,
     "declarationMap": true,
     "isolatedModules": true,
@@ -13,7 +14,7 @@
     "module": "CommonJS",
     "target": "ES2023",
     "moduleResolution": "node",
-    "declarationDir": "dist/types",
+    "declarationDir": "dist",
     "rootDir": "./src",
     "outDir": "./dist"
   },
