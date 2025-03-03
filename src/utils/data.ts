@@ -1,0 +1,1 @@
+export const toAny=(data:unknown)=>JSON.parse(JSON.stringify(data))
