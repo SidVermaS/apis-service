@@ -17,7 +17,7 @@ export default class Service<T extends ServiceConfigI<T>> {
     return {}
   }
   private _generateURL (params: URLParamsI): string  {
-    let fullURL = `${this._config.baseURL}${params.path}`
+    let fullURL = `${params?.baseURL?.length ? params.baseURL : this._config.baseURL}${params.path}`
     if (params?.id !== undefined) {
       fullURL += `/${params.id}`
     }

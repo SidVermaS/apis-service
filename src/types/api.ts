@@ -1,7 +1,8 @@
 import { DataI, KeyStringPurePrimitiveI,  KeyStringUnknownI,  PurePrimitiveI } from "./common"
 
 export type URLParamsI = {
-  path:string;
+  baseURL?: string;
+  path: string;
   id?: PurePrimitiveI
   query?: Record<string, PurePrimitiveI>
   headers?:KeyStringPurePrimitiveI
