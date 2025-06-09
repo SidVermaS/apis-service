@@ -129,7 +129,7 @@ export default class Service<T extends ServiceConfigI<T>> {
               continue;
             }
           }
-          await this._responseHandler(params,error.response)
+          throw error
         } else {
           await this._responseHandler(params,error)
         }
