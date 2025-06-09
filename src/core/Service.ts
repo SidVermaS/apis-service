@@ -131,7 +131,7 @@ export default class Service<T extends ServiceConfigI<T>> {
           }
           throw error
         } else {
-          await this._responseHandler(params,error)
+          throw error
         }
       }
     }
